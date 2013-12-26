@@ -199,7 +199,18 @@ class Config
      */
     public static function setEnvironment($environment)
     {
+        if (self::$environment !== $environment) {
+            self::reset();
+        }
         self::$environment = $environment;
+    }
+
+    public static function removeEnvironment()
+    {
+        if (self::$environment !== null) {
+            self::reset();
+        }
+        self::$environment = null;
     }
 
     /**
@@ -208,5 +219,10 @@ class Config
     public static function getEnvironment()
     {
         return self::$environment;
+    }
+
+    public static function reset()
+    {
+        self::$configs = null;
     }
 }

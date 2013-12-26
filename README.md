@@ -38,7 +38,7 @@ Config::setPath(__DIR__ . "/configs");
 ```
 
 Optionally, you can also setup the environment. Setting up the environment will merge normal configurations with configurations in the environment directory. For example, if you setup the environment to be *prod*, the configurations from the directory
-``configs/prod/*`` will be loaded on top of the configurations from the directory ``configs``. Consider the following
+``configs/prod/*`` will be loaded on top of the configurations from the directory ``configs/*``. Consider the following
 example:
 
 ```php

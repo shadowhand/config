@@ -6,6 +6,11 @@ use PHPUnit_Framework_TestCase;
 
 class EnvironmentTest extends PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        Config::removeEnvironment();
+    }
+
     public function testSetEnvironment()
     {
         Config::setEnvironment("tests");

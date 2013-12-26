@@ -9,6 +9,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         Config::setPath(__DIR__ . "/__files");
+        Config::removeEnvironment();
     }
 
     public function testGetWholeFile()
