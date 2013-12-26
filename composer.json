@@ -1,0 +1,19 @@
+{
+    "name": "sinergi/config",
+    "type": "library",
+    "description": "PHP configurations loading",
+    "keywords": ["Config", "Configurations", "Loading", "Management"],
+    "homepage": "https://github.com/sinergi/config",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.28"
+    },
+    "autoload": {
+        "psr-0" : {
+            "Config" : "src/"
+        }
+    }
+}
