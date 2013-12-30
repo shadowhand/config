@@ -2,37 +2,39 @@
 
 class Config
 {
-    /** @var array $configs */
-    private static $configs = [];
+    /** @var array $namespaces */
+    private static $namespaces = [];
 
-    /** @var null|string $environment */
-    public static $environment = null;
+    /** @var Config\Instance $defaultClass */
+    private static $defaultClass;
 
-    /** @var null|string $path */
-    public static $path = null;
+    /** @var array|Config\Instance[] $classes */
+    private static $classes = [];
 
     /**
+     * @param string $dir
+     * @param string $env
      * @param string $file
+     * @return array
      */
-    private static function loadFile($file)
+    public static function loadFile($dir, $env, $file)
     {
-        $key = $file;
         $array1 = $array2 = [];
         $file = "{$file}.php";
 
-        if (file_exists(self::$path . DIRECTORY_SEPARATOR . $file)) {
-            $array1 = require self::$path . DIRECTORY_SEPARATOR . $file;
+        if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {
+            $array1 = require $dir . DIRECTORY_SEPARATOR . $file;
             if (!is_array($array1)) {
                 $array1 = [];
             }
         }
-        if (null !== self::$environment && file_exists(self::$path . DIRECTORY_SEPARATOR . self::$environment . DIRECTORY_SEPARATOR . $file)) {
-            $array2 = require self::$path . DIRECTORY_SEPARATOR . self::$environment . DIRECTORY_SEPARATOR . $file;
+        if (null !== $env && file_exists($dir . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file)) {
+            $array2 = require $dir . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file;
             if (!is_array($array2)) {
                 $array2 = [];
             }
         }
-        self::$configs[$key] = self::mergeArrays($array1, $array2);
+        return self::mergeArrays($array1, $array2);
     }
 
     /**
@@ -40,7 +42,7 @@ class Config
      * @param array $array2
      * @return array
      */
-    private static function mergeArrays(array $array1, array $array2)
+    public static function mergeArrays(array $array1, array $array2)
     {
         $retval = $array1;
         foreach ($array2 as $key => $value) {
@@ -57,7 +59,7 @@ class Config
      * @param string $name
      * @return array
      */
-    private static function getKey($name)
+    public static function getKey($name)
     {
         $file = $key = $sub = null;
         $parts = explode('.', $name);
@@ -78,71 +80,32 @@ class Config
     }
 
     /**
-     * Set a config
-     *
-     * @param string $name
-     * @param array $config
-     * @return void
-     */
-    public static function set($name, $config)
-    {
-        if (!isset(self::$configs[$name])) {
-            self::$configs[$name] = $config;
-        } else {
-            self::$configs[$name] = array_merge(self::$configs[$name], $config);
-        }
-    }
-
-    /**
-     * Get a config
-     *
-     * @param string $name
-     * @param mixed $default
-     * @throws InvalidArgumentException
-     * @return mixed
-     */
-    public static function get($name, $default = null)
-    {
-        if (!is_string($name) || empty($name)) {
-            throw new InvalidArgumentException("Parameter \$name passed to Config::get() is not a valid string ressource");
-        }
-
-        list($file, $key, $sub) = self::getKey($name);
-
-        if (!isset(self::$configs[$file])) {
-            self::loadFile($file);
-        }
-
-        return self::getValue($file, $key, $sub, $default);
-    }
-
-    /**
-     * @param string $file
+     * @param array $haystack
      * @param null|string $key
      * @param null|array $sub
      * @param null|mixed $default
      * @return mixed
      */
-    private static function getValue($file, $key = null, $sub = null, $default = null)
+    public static function getValue(array $haystack = null, $key = null, $sub = null, $default = null)
     {
-        if (empty($file) || !isset(self::$configs[$file])) {
+        if (empty($key) && !isset($haystack)) {
             return $default;
         } elseif (empty($key)) {
-            if (empty(self::$configs[$file]) && !empty($default)) {
+            if (!isset($haystack) && !empty($default)) {
                 return $default;
-            } elseif (isset(self::$configs[$file])) {
-                return self::$configs[$file];
+            } elseif (isset($haystack)) {
+                return $haystack;
             }
             return null;
         } elseif (!empty($key) && empty($sub)) {
-            if (empty(self::$configs[$file][$key]) && !empty($default)) {
+            if (empty($haystack[$key]) && !empty($default)) {
                 return $default;
-            } elseif (isset(self::$configs[$file][$key])) {
-                return self::$configs[$file][$key];
+            } elseif (isset($haystack[$key])) {
+                return $haystack[$key];
             }
             return null;
         } elseif (is_array($sub)) {
-            $array = isset(self::$configs[$file][$key]) ? self::$configs[$file][$key] : [];
+            $array = isset($haystack[$key]) ? $haystack[$key] : [];
             $value = self::findInMultiArray($sub, $array);
             if (empty($value) && !empty($default)) {
                 return $default;
@@ -174,16 +137,48 @@ class Config
     }
 
     /**
+     * Set a config
+     *
+     * @param string $name
+     * @param array $config
+     * @return Config\Instance
+     */
+    public static function set($name, $config)
+    {
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
+        }
+        return self::$defaultClass->set($name, $config);
+    }
+
+    /**
+     * Get a config
+     *
+     * @param string $name
+     * @param mixed $default
+     * @throws InvalidArgumentException
+     * @return mixed
+     */
+    public static function get($name, $default = null)
+    {
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
+        }
+        return self::$defaultClass->get($name, $default);
+    }
+
+    /**
      * @param null|string $path
      * @throws Exception
+     * @return Config\Instance
      */
     public static function setPath($path)
     {
-        $path = realpath($path);
-        if (!is_dir($path)) {
-            throw new Exception("Config path ({$path}) is not a valid directory");
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
         }
-        self::$path = $path;
+        self::$defaultClass->setPath($path);
+        return self::$defaultClass;
     }
 
     /**
@@ -191,26 +186,33 @@ class Config
      */
     public static function getPath()
     {
-        return self::$path;
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
+        }
+        return self::$defaultClass->getPath();
     }
 
     /**
      * @param null|string $environment
+     * @return Config\Instance
      */
     public static function setEnvironment($environment)
     {
-        if (self::$environment !== $environment) {
-            self::reset();
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
         }
-        self::$environment = $environment;
+        return self::$defaultClass->setEnvironment($environment);
     }
 
+    /**
+     * @return Config\Instance
+     */
     public static function removeEnvironment()
     {
-        if (self::$environment !== null) {
-            self::reset();
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
         }
-        self::$environment = null;
+        return self::$defaultClass->removeEnvironment();
     }
 
     /**
@@ -218,11 +220,20 @@ class Config
      */
     public static function getEnvironment()
     {
-        return self::$environment;
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
+        }
+        return self::$defaultClass->getEnvironment();
     }
 
+    /**
+     * @return Config\Instance
+     */
     public static function reset()
     {
-        self::$configs = null;
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
+        }
+       return self::$defaultClass->reset();
     }
 }
