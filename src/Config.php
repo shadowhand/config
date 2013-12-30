@@ -141,7 +141,7 @@ class Config
     {
         $key = strtolower($namespace);
         if (!isset(self::$namespaces[$key])) {
-            if (strtolower(self::$defaultClass->getNamespace()) == $key) {
+            if (isset(self::$defaultClass) && strtolower(self::$defaultClass->getNamespace()) == $key) {
                 self::$namespaces[$key] = self::$defaultClass;
             } else {
                 self::$namespaces[$key] = (new Config\Instance)->setNamespace($namespace);
