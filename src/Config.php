@@ -134,6 +134,8 @@ class Config
     }
 
     /**
+     * Get namespace instance
+     *
      * @param string $namespace
      * @return Config\Instance
      */
@@ -149,6 +151,19 @@ class Config
         }
 
         return self::$namespaces[$key];
+    }
+
+    /**
+     * Get default instance
+     *
+     * @return Config\Instance
+     */
+    public static function d()
+    {
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
+        }
+        return self::$defaultClass;
     }
 
     /**
@@ -254,6 +269,29 @@ class Config
             self::$defaultClass = new Config\Instance;
         }
         return self::$defaultClass->getEnvironment();
+    }
+
+    /**
+     * @param string|null $namespace
+     * @return Config\Instance
+     */
+    public static function setNamespace($namespace)
+    {
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
+        }
+        return self::$defaultClass->setNamespace($namespace);
+    }
+
+    /**
+     * @return string|null
+     */
+    public static function getNamespace()
+    {
+        if (!self::$defaultClass instanceof Config\Instance) {
+            self::$defaultClass = new Config\Instance;
+        }
+        return self::$defaultClass->getNamespace();
     }
 
     /**
