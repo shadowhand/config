@@ -8,9 +8,6 @@ class Config
     /** @var Config\Instance $defaultClass */
     private static $defaultClass;
 
-    /** @var array|Config\Instance[] $classes */
-    private static $classes = [];
-
     /**
      * @param string $dir
      * @param string $env
@@ -134,6 +131,39 @@ class Config
             return $haystack[$currentNeedle];
         }
         return null;
+    }
+
+    /**
+     * @param string $namespace
+     * @return Config\Instance
+     */
+    public static function n($namespace)
+    {
+        $key = strtolower($namespace);
+        if (!isset(self::$namespaces[$key])) {
+            if (strtolower(self::$defaultClass->getNamespace()) == $key) {
+                self::$namespaces[$key] = self::$defaultClass;
+            } else {
+                self::$namespaces[$key] = (new Config\Instance)->setNamespace($namespace);
+            }
+        }
+
+        return self::$namespaces[$key];
+    }
+
+    /**
+     * @param Config\Instance $obj
+     * @param string $oldNamespace
+     * @param string $newNamespace
+     */
+    public static function changeConfigNamespace($obj, $oldNamespace, $newNamespace)
+    {
+        $oldNamespace = strtolower($oldNamespace);
+        $newNamespace = strtolower($newNamespace);
+        if (isset(self::$namespaces[$oldNamespace])) {
+            unset(self::$namespaces[$oldNamespace]);
+        }
+        self::$namespaces[$newNamespace] = $obj;
     }
 
     /**

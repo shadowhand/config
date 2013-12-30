@@ -103,3 +103,14 @@ return [
     'timezone' => "America/New_York"
 ];
 ```
+
+## Namespaces
+
+You can separate configurations in namespaces. For example:
+
+```php
+Config::n('MyNamespace')->setPath(__DIR__ . "/configs");
+Config::n('MyNamespace')->get('app.timezone');
+```
+
+

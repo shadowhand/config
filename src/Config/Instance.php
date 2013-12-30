@@ -120,6 +120,25 @@ class Instance
     }
 
     /**
+     * @param null|string $namespace
+     * @return $this
+     */
+    public function setNamespace($namespace)
+    {
+        Config::changeConfigNamespace($this, $this->namespace, $namespace);
+        $this->namespace = $namespace;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    /**
      * @return $this
      */
     public function reset()
