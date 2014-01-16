@@ -1,0 +1,135 @@
+<?php
+namespace Config;
+
+/**
+ * Config Helper functions
+ *
+ * @package Config
+ */
+class Helper
+{
+    /**
+     * @param string $dir
+     * @param string $env
+     * @param string $file
+     * @return array
+     */
+    public static function loadFile($dir, $env, $file)
+    {
+        $array1 = $array2 = [];
+        $file = "{$file}.php";
+
+        if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {
+            $array1 = require $dir . DIRECTORY_SEPARATOR . $file;
+            if (!is_array($array1)) {
+                $array1 = [];
+            }
+        }
+        if (null !== $env && file_exists($dir . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file)) {
+            $array2 = require $dir . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file;
+            if (!is_array($array2)) {
+                $array2 = [];
+            }
+        }
+        return self::mergeArrays($array1, $array2);
+    }
+
+    /**
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    public static function mergeArrays(array $array1, array $array2)
+    {
+        $retval = $array1;
+        foreach ($array2 as $key => $value) {
+            if (is_array($value) && isset($retval[$key])) {
+                $retval[$key] = self::mergeArrays($retval[$key], $value);
+            } else {
+                $retval[$key] = $value;
+            }
+        }
+        return $retval;
+    }
+
+    /**
+     * @param string $name
+     * @return array
+     */
+    public static function getKey($name)
+    {
+        $file = $key = $sub = null;
+        $parts = explode('.', $name);
+        if (isset($parts[0])) {
+            $file = $parts[0];
+        }
+        if (isset($parts[1])) {
+            $key = $parts[1];
+        }
+        if (isset($parts[2])) {
+            $sub = [];
+            foreach (array_slice($parts, 2) as $subkey) {
+                $sub[] = $subkey;
+            }
+        }
+
+        return [$file, $key, $sub];
+    }
+
+    /**
+     * @param array $haystack
+     * @param null|string $key
+     * @param null|array $sub
+     * @param null|mixed $default
+     * @return mixed
+     */
+    public static function getValue(array $haystack = null, $key = null, $sub = null, $default = null)
+    {
+        if (empty($key) && !isset($haystack)) {
+            return $default;
+        } elseif (empty($key)) {
+            if (!isset($haystack) && !empty($default)) {
+                return $default;
+            } elseif (isset($haystack)) {
+                return $haystack;
+            }
+            return null;
+        } elseif (!empty($key) && empty($sub)) {
+            if (empty($haystack[$key]) && !empty($default)) {
+                return $default;
+            } elseif (isset($haystack[$key])) {
+                return $haystack[$key];
+            }
+            return null;
+        } elseif (is_array($sub)) {
+            $array = isset($haystack[$key]) ? $haystack[$key] : [];
+            $value = self::findInMultiArray($sub, $array);
+            if (empty($value) && !empty($default)) {
+                return $default;
+            } elseif (isset($value)) {
+                return $value;
+            }
+            return null;
+        }
+        return null;
+    }
+
+    /**
+     * @param array $needle
+     * @param array $haystack
+     * @return mixed
+     */
+    private static function findInMultiArray(array $needle, array $haystack)
+    {
+        $currentNeedle = current($needle);
+        $needle = array_slice($needle, 1);
+        if (isset($haystack[$currentNeedle]) && is_array($haystack[$currentNeedle]) && count($needle)) {
+            return self::findInMultiArray($needle, $haystack[$currentNeedle]);
+        } elseif (isset($haystack[$currentNeedle]) && !is_array($haystack[$currentNeedle]) && count($needle)) {
+            return null;
+        } elseif (isset($haystack[$currentNeedle])) {
+            return $haystack[$currentNeedle];
+        }
+        return null;
+    }
+}

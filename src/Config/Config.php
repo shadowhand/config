@@ -1,11 +1,15 @@
 <?php
 namespace Config;
 
-use Config;
 use Exception;
 use InvalidArgumentException;
 
-class Instance
+/**
+ * Config class
+ *
+ * @package Config
+ */
+class Config
 {
     /** @var array $configs */
     private $configs = [];
@@ -18,6 +22,16 @@ class Instance
 
     /** @var null|string $path */
     private $path = null;
+
+    /**
+     * @param null|string $path
+     * @param null|string $environment
+     */
+    public function __construct($path = null, $environment = null)
+    {
+        $this->setPath($path);
+        $this->setEnvironment($environment);
+    }
 
     /**
      * Set a config
@@ -50,17 +64,17 @@ class Instance
             throw new InvalidArgumentException("Parameter \$name passed to Config::get() is not a valid string ressource");
         }
 
-        list($file, $key, $sub) = Config::getKey($name);
+        list($file, $key, $sub) = Helper::getKey($name);
 
         if (!isset($this->configs[$file])) {
-            $this->configs[$file] = Config::loadFile(
+            $this->configs[$file] = Helper::loadFile(
                 $this->path,
                 $this->environment,
                 $file
             );
         }
 
-        return Config::getValue($this->configs[$file], $key, $sub, $default);
+        return Helper::getValue($this->configs[$file], $key, $sub, $default);
     }
 
     /**
@@ -68,11 +82,13 @@ class Instance
      * @throws Exception
      * @return $this
      */
-    public function setPath($path)
+    public function setPath($path = null)
     {
-        $path = realpath($path);
-        if (!is_dir($path)) {
-            throw new Exception("Config path ({$path}) is not a valid directory");
+        if (null !== $path) {
+            $path = realpath($path);
+            if (!is_dir($path)) {
+                throw new Exception("Config path ({$path}) is not a valid directory");
+            }
         }
         $this->path = $path;
         return $this;
@@ -125,7 +141,6 @@ class Instance
      */
     public function setNamespace($namespace)
     {
-        Config::changeConfigNamespace($this, $this->namespace, $namespace);
         $this->namespace = $namespace;
         return $this;
     }

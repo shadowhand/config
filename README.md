@@ -34,7 +34,7 @@ It is recommended that you install the Config library [through composer](http://
 Setup the configurations directory:
 
 ```php
-Config::setPath(__DIR__ . "/configs");
+$config = new Config(__DIR__ . "/configs");
 ```
 
 Optionally, you can also setup the environment. Setting up the environment will merge normal configurations with configurations in the environment directory. For example, if you setup the environment to be *prod*, the configurations from the directory
@@ -42,13 +42,13 @@ Optionally, you can also setup the environment. Setting up the environment will 
 example:
 
 ```php
-Config::setEnvironment('prod');
+$config->setEnvironment('prod');
 ```
 
 You can than use the configurations like this:
 
 ```php
-Config::get('app.timezone');
+$config->get('app.timezone');
 ```
 
 ## Getter
@@ -58,19 +58,19 @@ The configuration getter uses a simple syntax: ``file_name.array_key``.
 For example:
 
 ```php
-Config::get('app.timezone');
+$config->get('app.timezone');
 ```
 
 You can optionally set a default value like this:
 
 ```php
-Config::get('app.timezone', "America/New_York");
+$config->get('app.timezone', "America/New_York");
 ```
 
 You can use the getter to access multidimensional arrays in your configurations:
 
 ```php
-Config::get('database.connections.default.host');
+$config->get('database.connections.default.host');
 ```
 
 ## Setter
@@ -78,13 +78,13 @@ Config::get('database.connections.default.host');
 Alternatively, you can set configurations from your application code:
 
 ```php
-Config::set('app.timezone', "Europe/Berlin");
+$config->set('app.timezone', "Europe/Berlin");
 ```
 
 You can set entire arrays of configurations:
 
 ```php
-Config::set('database', [
+$config->set('database', [
     'host' => "localhost",
     'dbname' => "my_database",
     'user' => "my_user",
@@ -103,14 +103,3 @@ return [
     'timezone' => "America/New_York"
 ];
 ```
-
-## Namespaces
-
-You can separate configurations in namespaces. For example:
-
-```php
-Config::n('MyNamespace')->setPath(__DIR__ . "/configs");
-Config::n('MyNamespace')->get('app.timezone');
-```
-
-

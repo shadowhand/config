@@ -12,7 +12,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $declaredCount = count($declared);
         Autoloader::autoload('Foo');
         $this->assertEquals($declaredCount, count(get_declared_classes()), 'Config\\Autoloader::autoload() is trying to load classes outside of the Config namespace');
-        Autoloader::autoload('Config');
-        $this->assertTrue(in_array('Config', get_declared_classes()), 'Config\\Autoloader::autoload() failed to autoload the Config class');
+        Autoloader::autoload('Config\Config');
+        $this->assertTrue(in_array('Config\Config', get_declared_classes()), 'Config\\Autoloader::autoload() failed to autoload the Config class');
     }
 }

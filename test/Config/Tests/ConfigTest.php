@@ -1,56 +1,58 @@
 <?php
 namespace Config\Tests;
 
-use Config;
+use Config\Config;
 use PHPUnit_Framework_TestCase;
 
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
+    /** @var \Config\Config $config */
+    private $config;
+
     public function setUp()
     {
-        Config::setPath(__DIR__ . "/__files");
-        Config::removeEnvironment();
+        $this->config = new Config(__DIR__ . "/__files");
     }
 
     public function testGetWholeFile()
     {
-        $test = Config::get('database');
+        $test = $this->config->get('database');
         $this->assertEquals("pdo_mysql", $test['connections']['default']['driver']);
     }
 
     public function testGetter()
     {
-        $test = Config::get('app.timezone');
+        $test = $this->config->get('app.timezone');
         $this->assertEquals("America/New_York", $test);
     }
 
     public function testGetterDefault()
     {
-        $test = Config::get('app.test', "this a test");
+        $test = $this->config->get('app.test', "this a test");
         $this->assertEquals("this a test", $test);
     }
 
     public function testGetterDefaultExists()
     {
-        $test = Config::get('app.timezone', "this a test");
+        $test = $this->config->get('app.timezone', "this a test");
         $this->assertEquals("America/New_York", $test);
     }
 
     public function testGetterArray()
     {
-        $test = Config::get('database.connections.default');
+        $test = $this->config->get('database.connections.default');
         $this->assertEquals("127.0.0.1", $test['host']);
     }
 
     public function testGetterArrayDefault()
     {
-        $test = Config::get('database.connections.default.persistent', true);
+        $test = $this->config->get('database.connections.default.persistent', true);
         $this->assertTrue($test);
     }
 
     public function testGetterArrayDefaultExists()
     {
-        $test = Config::get('database.connections.default.host', 'localhost');
+        $test = $this->config->get('database.connections.default.host', 'localhost');
         $this->assertEquals("127.0.0.1", $test);
     }
 }

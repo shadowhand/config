@@ -1,20 +1,15 @@
 <?php
 namespace Config\Tests;
 
-use Config;
+use Config\Config;
 use PHPUnit_Framework_TestCase;
 
 class EnvironmentTest extends PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        Config::removeEnvironment();
-    }
-
     public function testSetEnvironment()
     {
-        Config::setEnvironment("tests");
-        $env = Config::getEnvironment();
+        $config = new Config(null, 'tests');
+        $env = $config->getEnvironment();
         $this->assertEquals("tests", $env);
     }
 }

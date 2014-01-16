@@ -1,7 +1,7 @@
 <?php
 namespace Config\Tests;
 
-use Config;
+use Config\Config;
 use Exception;
 use PHPUnit_Framework_TestCase;
 
@@ -9,8 +9,8 @@ class PathTest extends PHPUnit_Framework_TestCase
 {
     public function testSetPath()
     {
-        Config::setPath(__DIR__ . "/__files");
-        $path = Config::getPath();
+        $config = new Config(__DIR__ . "/__files");
+        $path = $config->getPath();
         $this->assertEquals(__DIR__ . "/__files", $path);
     }
 
@@ -19,6 +19,6 @@ class PathTest extends PHPUnit_Framework_TestCase
      */
     public function testBadPath()
     {
-        Config::setPath("/this/path/does/not/exists");
+        new Config("/this/path/does/not/exists");
     }
 }
