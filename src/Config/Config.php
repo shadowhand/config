@@ -1,26 +1,29 @@
 <?php
-namespace Config;
+namespace Sinergi\Config;
 
 use Exception;
 use InvalidArgumentException;
 
-/**
- * Config class
- *
- * @package Config
- */
 class Config
 {
-    /** @var array $configs */
+    /**
+     * @var array
+     */
     private $configs = [];
 
-    /** @var null|string $namespace */
+    /**
+     * @var null|string
+     */
     private $namespace = null;
 
-    /** @var null|string $environment */
+    /**
+     * @var null|string
+     */
     private $environment = null;
 
-    /** @var null|string $path */
+    /**
+     * @var null|string
+     */
     private $path = null;
 
     /**

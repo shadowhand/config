@@ -34,6 +34,8 @@ It is recommended that you install the Config library [through composer](http://
 Setup the configurations directory:
 
 ```php
+use Sinergi\Config\Config;
+
 $config = new Config(__DIR__ . "/configs");
 ```
 

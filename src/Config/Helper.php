@@ -1,5 +1,5 @@
 <?php
-namespace Config;
+namespace Sinergi\Config;
 
 /**
  * Config Helper functions

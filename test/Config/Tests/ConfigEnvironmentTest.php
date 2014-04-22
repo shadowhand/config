@@ -1,12 +1,14 @@
 <?php
-namespace Config\Tests;
+namespace Sinergi\Config\Tests;
 
-use Config\Config;
+use Sinergi\Config\Config;
 use PHPUnit_Framework_TestCase;
 
 class ConfigEnvironmentTest extends PHPUnit_Framework_TestCase
 {
-    /** @var \Config\Config $config */
+    /**
+     * @var Config
+     */
     private $config;
 
     public function setUp()

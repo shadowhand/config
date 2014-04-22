@@ -1,8 +1,8 @@
 <?php
-namespace Config\Tests;
+namespace Sinergi\Config\Tests;
 
 use PHPUnit_Framework_TestCase;
-use Config\Autoloader;
+use Sinergi\Config\Autoloader;
 
 class AutoloaderTest extends PHPUnit_Framework_TestCase
 {
@@ -12,7 +12,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $declaredCount = count($declared);
         Autoloader::autoload('Foo');
         $this->assertEquals($declaredCount, count(get_declared_classes()), 'Config\\Autoloader::autoload() is trying to load classes outside of the Config namespace');
-        Autoloader::autoload('Config\Config');
-        $this->assertTrue(in_array('Config\Config', get_declared_classes()), 'Config\\Autoloader::autoload() failed to autoload the Config class');
+        Autoloader::autoload('Sinergi\Config\Config');
+        $this->assertTrue(in_array('Sinergi\Config\Config', get_declared_classes()), 'Sinergi\\Config\\Autoloader::autoload() failed to autoload the Sinergi\\Config\\Config class');
     }
 }
