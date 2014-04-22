@@ -3,8 +3,9 @@ namespace Sinergi\Config;
 
 use Exception;
 use InvalidArgumentException;
+use ArrayAccess;
 
-class Config
+class Config implements ArrayAccess
 {
     /**
      * @var array
@@ -51,6 +52,14 @@ class Config
             $this->configs[$name] = array_merge($this->configs[$name], $config);
         }
         return $this;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function remove($name)
+    {
+        unset($this->configs[$name]);
     }
 
     /**
@@ -163,5 +172,69 @@ class Config
     {
         $this->configs = null;
         return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        return $this->offsetGet($name);
+    }
+
+    /**
+     * @param string $name
+     * @param array|null $args
+     * @return mixed
+     */
+    public function __call($name, $args = null)
+    {
+        return $this->offsetGet($name);
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return $this->offsetExists($name);
+    }
+
+    /**
+     * @param int $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        $item = $this->get($offset);
+        return isset($item);
+    }
+
+    /**
+     * @param int $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * @param int $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->set($offset, $value);
+    }
+
+    /**
+     * @param int $offset
+     */
+    public function offsetUnset($offset)
+    {
+        $this->remove($offset);
     }
 }

@@ -57,4 +57,10 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $test = $this->config->get('database.connections.default.host', 'localhost');
         $this->assertEquals("127.0.0.1", $test);
     }
+
+    public function testArrayAccess()
+    {
+        $test = $this->config['app']['timezone'];
+        $this->assertEquals("America/New_York", $test);
+    }
 }
