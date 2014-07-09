@@ -30,6 +30,12 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testGetterDefault()
     {
+        $test = $this->config->get('app.test', []);
+        $this->assertEquals([], $test);
+    }
+
+    public function testGetterEmptyDefault()
+    {
         $test = $this->config->get('app.test', "this a test");
         $this->assertEquals("this a test", $test);
     }

@@ -88,14 +88,14 @@ class Helper
         if (empty($key) && !isset($haystack)) {
             return $default;
         } elseif (empty($key)) {
-            if (!isset($haystack) && !empty($default)) {
+            if (!isset($haystack) && null !== $default) {
                 return $default;
             } elseif (isset($haystack)) {
                 return $haystack;
             }
             return null;
         } elseif (!empty($key) && empty($sub)) {
-            if (empty($haystack[$key]) && !empty($default)) {
+            if (empty($haystack[$key]) && null !== $default) {
                 return $default;
             } elseif (isset($haystack[$key])) {
                 return $haystack[$key];
@@ -104,7 +104,7 @@ class Helper
         } elseif (is_array($sub)) {
             $array = isset($haystack[$key]) ? $haystack[$key] : [];
             $value = self::findInMultiArray($sub, $array);
-            if (empty($value) && !empty($default)) {
+            if (empty($value) && null !== $default) {
                 return $default;
             } elseif (isset($value)) {
                 return $value;
