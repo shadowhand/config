@@ -1,5 +1,4 @@
-Config
-======
+# Config
 
 [![Build Status](https://img.shields.io/travis/sinergi/config/master.svg?style=flat)](https://travis-ci.org/sinergi/config)
 [![Latest Stable Version](http://img.shields.io/packagist/v/sinergi/config.svg?style=flat)](https://packagist.org/packages/sinergi/config)
