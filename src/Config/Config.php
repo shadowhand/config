@@ -28,7 +28,7 @@ class Config implements ArrayAccess
     private $environment = null;
 
     /**
-     * @var null|string
+     * @var PathCollection
      */
     private $paths = [];
 
@@ -50,6 +50,24 @@ class Config implements ArrayAccess
             $this->paths = new PathCollection();
         }
         $this->setEnvironment($environment);
+    }
+
+    /**
+     * @return PathCollection
+     */
+    public function getPaths()
+    {
+        return $this->paths;
+    }
+
+    /**
+     * @param PathCollection $pathCollection
+     * @return $this
+     */
+    public function setPaths(PathCollection $pathCollection)
+    {
+        $this->paths = $pathCollection;
+        return $this;
     }
 
     /**
