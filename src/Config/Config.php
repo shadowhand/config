@@ -25,7 +25,7 @@ class Config implements ArrayAccess
     /**
      * @var null|string
      */
-    private $path = null;
+    private $paths = [];
 
     /**
      * @param null|string $path
@@ -80,7 +80,7 @@ class Config implements ArrayAccess
 
         if (!isset($this->configs[$file])) {
             $this->configs[$file] = Helper::loadFile(
-                $this->path,
+                current($this->paths),
                 $this->environment,
                 $file
             );
@@ -102,7 +102,7 @@ class Config implements ArrayAccess
                 throw new Exception("Config path ({$path}) is not a valid directory");
             }
         }
-        $this->path = $path;
+        $this->paths = [$path];
         return $this;
     }
 
@@ -111,7 +111,7 @@ class Config implements ArrayAccess
      */
     public function getPath()
     {
-        return $this->path;
+        return current($this->paths);
     }
 
     /**
