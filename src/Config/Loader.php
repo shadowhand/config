@@ -4,37 +4,43 @@ namespace Sinergi\Config;
 class Loader
 {
     /**
-     * @param string $dir
+     * @param PathCollection $paths
      * @param string $env
      * @param string $file
      * @return array
      */
-    public function loadFile($dir, $env, $file)
+    public function loadFile(PathCollection $paths, $env, $file)
     {
         $array1 = $array2 = [];
         $file = "{$file}.php";
 
-        if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {
-            $array1 = require $dir . DIRECTORY_SEPARATOR . $file;
-            if (!is_array($array1)) {
-                $array1 = [];
+        $retval = [];
+        foreach ($paths as $path) {
+            if (file_exists($path . DIRECTORY_SEPARATOR . $file)) {
+                $array1 = require $path . DIRECTORY_SEPARATOR . $file;
+                if (!is_array($array1)) {
+                    $array1 = [];
+                }
             }
-        }
-        if (null !== $env && file_exists($dir . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file)) {
-            $array2 = require $dir . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file;
-            if (!is_array($array2)) {
-                $array2 = [];
+            if (null !== $env && file_exists($path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file)) {
+                $array2 = require $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file;
+                if (!is_array($array2)) {
+                    $array2 = [];
+                }
             }
+            $retval = $this->mergeArrays($retval, $array1, $array2);
         }
-        return $this->mergeArrays($array1, $array2);
+
+        return $retval;
     }
 
     /**
      * @param array $array1
      * @param array $array2
+     * @param array $array3
      * @return array
      */
-    public function mergeArrays(array $array1, array $array2)
+    public function mergeArrays(array $array1, array $array2, array $array3 = null)
     {
         $retval = $array1;
         foreach ($array2 as $key => $value) {
@@ -43,6 +49,9 @@ class Loader
             } else {
                 $retval[$key] = $value;
             }
+        }
+        if (null !== $array3) {
+            $retval = $this->mergeArrays($retval, $array3);
         }
         return $retval;
     }

@@ -38,9 +38,12 @@ class Config implements ArrayAccess
      */
     public function __construct($path = null, $environment = null)
     {
-        $this->setPath($path);
-        $this->setEnvironment($environment);
         $this->loader = new Loader;
+        $this->paths = new PathCollection();
+        if (null !== $path) {
+            $this->paths->add($path);
+        }
+        $this->setEnvironment($environment);
     }
 
     /**
@@ -86,7 +89,7 @@ class Config implements ArrayAccess
 
         if (!isset($this->configs[$file])) {
             $this->configs[$file] = $this->loader->loadFile(
-                current($this->paths),
+                $this->paths,
                 $this->environment,
                 $file
             );
@@ -99,28 +102,25 @@ class Config implements ArrayAccess
      * @param null|string $path
      * @throws Exception
      * @return $this
+     * @deprecated use path collection
      */
     public function setPath($path = null)
     {
+        $this->reset();
+        $this->paths->removeAll();
         if (null !== $path) {
-            $path = realpath($path);
-            if (!is_dir($path)) {
-                throw new Exception("Config path ({$path}) is not a valid directory");
-            }
-            if ($path !== current($this->paths)) {
-                $this->reset();
-            }
+            $this->paths->add($path);
         }
-        $this->paths = [$path];
         return $this;
     }
 
     /**
      * @return null|string
+     * @deprecated use path collection
      */
     public function getPath()
     {
-        return current($this->paths);
+        return $this->paths->get(0);
     }
 
     /**
