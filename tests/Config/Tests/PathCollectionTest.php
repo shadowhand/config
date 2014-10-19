@@ -3,6 +3,7 @@ namespace Sinergi\Config\Tests;
 
 use Exception;
 use PHPUnit_Framework_TestCase;
+use Sinergi\Config\Config;
 use Sinergi\Config\PathCollection;
 
 class PathCollectionTest extends PHPUnit_Framework_TestCase
@@ -30,5 +31,15 @@ class PathCollectionTest extends PHPUnit_Framework_TestCase
         $pathCollection->add(__DIR__ . "/__files/config2");
         $pathCollection->removeAll();
         $this->assertCount(0, $pathCollection);
+    }
+
+    public function testConfigConstructor()
+    {
+        $config = new Config([
+            __DIR__ . "/__files",
+            __DIR__ . "/__files/config2",
+        ]);
+        $this->assertEquals(__DIR__ . "/__files", $config->getPaths()->get(0));
+        $this->assertEquals(__DIR__ . "/__files/config2", $config->getPaths()->get(1));
     }
 }
