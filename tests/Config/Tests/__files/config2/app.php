@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'timezone' => 'America/New_York'
+    'timezone' => 'Asia/Hong_Kong'
 ];

@@ -11,9 +11,15 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     private $config;
 
+    /**
+     * @var Config
+     */
+    private $configMultiplePaths;
+
     public function setUp()
     {
         $this->config = new Config(__DIR__ . "/__files");
+        $this->configMultiplePaths = new Config([__DIR__ . "/__files", __DIR__ . "/__files/config2"]);
     }
 
     public function testGetWholeFile()
@@ -68,5 +74,13 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         $test = $this->config['app']['timezone'];
         $this->assertEquals("America/New_York", $test);
+    }
+
+    public function testMultiplePaths()
+    {
+        $test = $this->configMultiplePaths->get('app.timezone');
+        $this->assertEquals("Asia/Hong_Kong", $test);
+        $test = $this->configMultiplePaths->get('config2.config2');
+        $this->assertEquals("another config directory", $test);
     }
 }
