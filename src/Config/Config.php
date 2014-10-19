@@ -8,6 +8,11 @@ use ArrayAccess;
 class Config implements ArrayAccess
 {
     /**
+     * @var Loader
+     */
+    private $loader;
+
+    /**
      * @var array
      */
     private $configs = [];
@@ -35,6 +40,7 @@ class Config implements ArrayAccess
     {
         $this->setPath($path);
         $this->setEnvironment($environment);
+        $this->loader = new Loader;
     }
 
     /**
@@ -76,17 +82,17 @@ class Config implements ArrayAccess
             throw new InvalidArgumentException("Parameter \$name passed to Config::get() is not a valid string ressource");
         }
 
-        list($file, $key, $sub) = Helper::getKey($name);
+        list($file, $key, $sub) = $this->loader->getKey($name);
 
         if (!isset($this->configs[$file])) {
-            $this->configs[$file] = Helper::loadFile(
+            $this->configs[$file] = $this->loader->loadFile(
                 current($this->paths),
                 $this->environment,
                 $file
             );
         }
 
-        return Helper::getValue($this->configs[$file], $key, $sub, $default);
+        return $this->loader->getValue($this->configs[$file], $key, $sub, $default);
     }
 
     /**

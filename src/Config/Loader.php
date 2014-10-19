@@ -1,12 +1,7 @@
 <?php
 namespace Sinergi\Config;
 
-/**
- * Config Helper functions
- *
- * @package Config
- */
-class Helper
+class Loader
 {
     /**
      * @param string $dir
