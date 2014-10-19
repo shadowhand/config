@@ -17,6 +17,7 @@ class PathCollection extends ArrayCollection
             if (!is_dir($path)) {
                 throw new Exception("Config path ({$path}) is not a valid directory");
             }
+            $path = new Path($path);
         }
         $this->container[] = $path;
         return true;

@@ -33,15 +33,21 @@ class Config implements ArrayAccess
     private $paths = [];
 
     /**
-     * @param null|string $path
+     * @param null|array|string $path
      * @param null|string $environment
      */
     public function __construct($path = null, $environment = null)
     {
         $this->loader = new Loader;
-        $this->paths = new PathCollection();
         if (null !== $path) {
-            $this->paths->add($path);
+            if (is_string($path)) {
+                $this->paths = new PathCollection();
+                $this->paths->add($path);
+            } elseif (is_array($path)) {
+                $this->paths = new PathCollection($path);
+            }
+        } else {
+            $this->paths = new PathCollection();
         }
         $this->setEnvironment($environment);
     }
