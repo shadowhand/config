@@ -9,7 +9,7 @@ class Loader
      * @param string $file
      * @return array
      */
-    public static function loadFile($dir, $env, $file)
+    public function loadFile($dir, $env, $file)
     {
         $array1 = $array2 = [];
         $file = "{$file}.php";
@@ -26,7 +26,7 @@ class Loader
                 $array2 = [];
             }
         }
-        return self::mergeArrays($array1, $array2);
+        return $this->mergeArrays($array1, $array2);
     }
 
     /**
@@ -34,12 +34,12 @@ class Loader
      * @param array $array2
      * @return array
      */
-    public static function mergeArrays(array $array1, array $array2)
+    public function mergeArrays(array $array1, array $array2)
     {
         $retval = $array1;
         foreach ($array2 as $key => $value) {
             if (is_array($value) && isset($retval[$key])) {
-                $retval[$key] = self::mergeArrays($retval[$key], $value);
+                $retval[$key] = $this->mergeArrays($retval[$key], $value);
             } else {
                 $retval[$key] = $value;
             }
@@ -51,7 +51,7 @@ class Loader
      * @param string $name
      * @return array
      */
-    public static function getKey($name)
+    public function getKey($name)
     {
         $file = $key = $sub = null;
         $parts = explode('.', $name);
@@ -78,7 +78,7 @@ class Loader
      * @param null|mixed $default
      * @return mixed
      */
-    public static function getValue(array $haystack = null, $key = null, $sub = null, $default = null)
+    public function getValue(array $haystack = null, $key = null, $sub = null, $default = null)
     {
         if (empty($key) && !isset($haystack)) {
             return $default;
@@ -98,7 +98,7 @@ class Loader
             return null;
         } elseif (is_array($sub)) {
             $array = isset($haystack[$key]) ? $haystack[$key] : [];
-            $value = self::findInMultiArray($sub, $array);
+            $value = $this->findInMultiArray($sub, $array);
             if (empty($value) && null !== $default) {
                 return $default;
             } elseif (isset($value)) {
@@ -114,12 +114,12 @@ class Loader
      * @param array $haystack
      * @return mixed
      */
-    private static function findInMultiArray(array $needle, array $haystack)
+    private function findInMultiArray(array $needle, array $haystack)
     {
         $currentNeedle = current($needle);
         $needle = array_slice($needle, 1);
         if (isset($haystack[$currentNeedle]) && is_array($haystack[$currentNeedle]) && count($needle)) {
-            return self::findInMultiArray($needle, $haystack[$currentNeedle]);
+            return $this->findInMultiArray($needle, $haystack[$currentNeedle]);
         } elseif (isset($haystack[$currentNeedle]) && !is_array($haystack[$currentNeedle]) && count($needle)) {
             return null;
         } elseif (isset($haystack[$currentNeedle])) {
