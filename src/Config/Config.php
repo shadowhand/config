@@ -107,6 +107,9 @@ class Config implements ArrayAccess
             if (!is_dir($path)) {
                 throw new Exception("Config path ({$path}) is not a valid directory");
             }
+            if ($path !== current($this->paths)) {
+                $this->reset();
+            }
         }
         $this->paths = [$path];
         return $this;
