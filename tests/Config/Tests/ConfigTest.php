@@ -27,6 +27,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $test = $this->config->get('database');
         $this->assertEquals("pdo_mysql", $test['connections']['default']['driver']);
     }
+    
 
     public function testGetter()
     {
