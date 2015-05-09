@@ -35,10 +35,10 @@ class PathCollectionTest extends PHPUnit_Framework_TestCase
 
     public function testConfigConstructor()
     {
-        $config = new Config([
+        $config = new Config(array(
             __DIR__ . "/__files",
             __DIR__ . "/__files/config2",
-        ]);
+        ));
         $this->assertEquals(__DIR__ . "/__files", $config->getPaths()->get(0));
         $this->assertEquals(__DIR__ . "/__files/config2", $config->getPaths()->get(1));
     }
