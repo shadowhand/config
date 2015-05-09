@@ -1,30 +1,42 @@
 {
-    "name": "jenner/config",
-    "type": "library",
-    "description": "PHP configurations loading",
-    "keywords": ["Config", "Configurations", "Loading", "Management"],
-    "homepage": "https://github.com/sinergi/config",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Gabriel Bull",
-            "email": "me@gabrielbull.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.3"
+  "name": "jenner/config",
+  "type": "library",
+  "description": "PHP configurations loading",
+  "keywords": [
+    "Config",
+    "Configurations",
+    "Loading",
+    "Management"
+  ],
+  "homepage": "https://github.com/sinergi/config",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gabriel Bull",
+      "email": "me@gabrielbull.com"
     },
-    "require-dev": {
-        "phpunit/phpunit": "~3"
-    },
-    "autoload": {
-        "psr-4": {
-            "Sinergi\\Config\\": "src/Config"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Sinergi\\Config\\Tests\\": ["tests/Config/Tests", "tests/Config/Tests/_includes"]
-        }
+    {
+      "name": "Jenner",
+      "email": "hypxm@qq.com"
     }
+  ],
+  "require": {
+    "php": ">=5.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Sinergi\\Config\\": "src/Config"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Sinergi\\Config\\Tests\\": [
+        "tests/Config/Tests",
+        "tests/Config/Tests/_includes"
+      ]
+    }
+  }
 }
