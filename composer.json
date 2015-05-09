@@ -1,5 +1,5 @@
 {
-    "name": "sinergi/config",
+    "name": "jenner/config",
     "type": "library",
     "description": "PHP configurations loading",
     "keywords": ["Config", "Configurations", "Loading", "Management"],
