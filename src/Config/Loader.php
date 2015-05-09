@@ -106,7 +106,7 @@ class Loader
             }
             return null;
         } elseif (is_array($sub)) {
-            $array = isset($haystack[$key]) ? $haystack[$key] : [];
+            $array = isset($haystack[$key]) ? $haystack[$key] : array();
             $value = $this->findInMultiArray($sub, $array);
             if (empty($value) && null !== $default) {
                 return $default;
