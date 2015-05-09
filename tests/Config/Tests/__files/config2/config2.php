@@ -1,5 +1,5 @@
 <?php
 
-return [
+return array(
     'config2' => 'another config directory',
-];
+);
