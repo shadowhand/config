@@ -7,12 +7,12 @@ use Countable;
 use IteratorAggregate;
 use JsonSerializable;
 
-class ArrayCollection implements Countable, IteratorAggregate, ArrayAccess, JsonSerializable
+class ArrayCollection implements Countable, IteratorAggregate, ArrayAccess
 {
     /**
      * @var array
      */
-    protected $container = [];
+    protected $container = array();
 
     /**
      * @param array $elements
@@ -138,6 +138,6 @@ class ArrayCollection implements Countable, IteratorAggregate, ArrayAccess, Json
 
     public function removeAll()
     {
-        $this->container = [];
+        $this->container = array();
     }
 }

@@ -11,21 +11,21 @@ class Loader
      */
     public function loadFile(PathCollection $paths, $env, $file)
     {
-        $array1 = $array2 = [];
+        $array1 = $array2 = array();
         $file = "{$file}.php";
 
-        $retval = [];
+        $retval = array();
         foreach ($paths as $path) {
             if (file_exists($path . DIRECTORY_SEPARATOR . $file)) {
                 $array1 = require $path . DIRECTORY_SEPARATOR . $file;
                 if (!is_array($array1)) {
-                    $array1 = [];
+                    $array1 = array();
                 }
             }
             if (null !== $env && file_exists($path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file)) {
                 $array2 = require $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file;
                 if (!is_array($array2)) {
-                    $array2 = [];
+                    $array2 = array();
                 }
             }
             $retval = $this->mergeArrays($retval, $array1, $array2);
@@ -71,13 +71,13 @@ class Loader
             $key = $parts[1];
         }
         if (isset($parts[2])) {
-            $sub = [];
+            $sub = array();
             foreach (array_slice($parts, 2) as $subkey) {
                 $sub[] = $subkey;
             }
         }
 
-        return [$file, $key, $sub];
+        return array($file, $key, $sub);
     }
 
     /**
