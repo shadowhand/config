@@ -22,3 +22,4 @@ class PathTest extends PHPUnit_Framework_TestCase
         new Config("/this/path/does/not/exists");
     }
 }
+

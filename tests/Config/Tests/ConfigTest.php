@@ -19,7 +19,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->config = new Config(__DIR__ . "/__files");
-        $this->configMultiplePaths = new Config([__DIR__ . "/__files", __DIR__ . "/__files/config2"]);
+        $this->configMultiplePaths = new Config(array(__DIR__ . "/__files", __DIR__ . "/__files/config2"));
     }
 
     public function testGetWholeFile()
@@ -27,6 +27,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $test = $this->config->get('database');
         $this->assertEquals("pdo_mysql", $test['connections']['default']['driver']);
     }
+    
 
     public function testGetter()
     {
@@ -36,8 +37,8 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testGetterDefault()
     {
-        $test = $this->config->get('app.test', []);
-        $this->assertEquals([], $test);
+        $test = $this->config->get('app.test', array());
+        $this->assertEquals(array(), $test);
     }
 
     public function testGetterEmptyDefault()

@@ -15,7 +15,7 @@ class Config implements ArrayAccess
     /**
      * @var array
      */
-    private $configs = [];
+    private $configs = array();
 
     /**
      * @var null|string
@@ -30,7 +30,7 @@ class Config implements ArrayAccess
     /**
      * @var PathCollection
      */
-    private $paths = [];
+    private $paths = array();
 
     /**
      * @param null|array|string $path

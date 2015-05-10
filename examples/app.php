@@ -1,5 +1,5 @@
 <?php
 
-return [
+return array(
     'timezone' => 'America/New_York'
-];
+);
