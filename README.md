@@ -1,5 +1,7 @@
 # Config
 
+[![Join the chat at https://gitter.im/sinergi/config](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sinergi/config?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://img.shields.io/travis/sinergi/config/master.svg?style=flat)](https://travis-ci.org/sinergi/config)
 [![Latest Stable Version](http://img.shields.io/packagist/v/sinergi/config.svg?style=flat)](https://packagist.org/packages/sinergi/config)
 [![Total Downloads](https://img.shields.io/packagist/dt/sinergi/config.svg?style=flat)](https://packagist.org/packages/sinergi/config)
