@@ -1,9 +1,15 @@
 # Config
 
-[![Build Status](https://img.shields.io/travis/sinergi/config/master.svg?style=flat)](https://travis-ci.org/sinergi/config)
+[![Build Status](https://travis-ci.org/sinergi/config.svg?branch=develop)](https://travis-ci.org/sinergi/config)
+[![StyleCI](https://styleci.io/repos/15445499/shield)](https://styleci.io/repos/15445499)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sinergi/config/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sinergi/config/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/sinergi/config/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/sinergi/config/?branch=master)
+[![Code Climate](https://codeclimate.com/github/sinergi/config/badges/gpa.svg)](https://codeclimate.com/github/sinergi/config)
 [![Latest Stable Version](http://img.shields.io/packagist/v/sinergi/config.svg?style=flat)](https://packagist.org/packages/sinergi/config)
 [![Total Downloads](https://img.shields.io/packagist/dt/sinergi/config.svg?style=flat)](https://packagist.org/packages/sinergi/config)
 [![License](https://img.shields.io/packagist/l/sinergi/config.svg?style=flat)](https://packagist.org/packages/sinergi/config)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/47b2ce95-a810-43dd-823e-482ab8e68ea3/mini.png)](https://insight.sensiolabs.com/projects/47b2ce95-a810-43dd-823e-482ab8e68ea3)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sinergi/config?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 PHP configurations loading library. It is made to enable your application to have different configurations depending on
 the environment it is running in. For example, your application can have different configurations for unit tests, 
