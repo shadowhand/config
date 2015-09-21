@@ -37,5 +37,12 @@
         "tests/Config/Tests/_includes"
       ]
     }
-  }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-develop": "0.6.1-dev"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
