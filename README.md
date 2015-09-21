@@ -136,7 +136,7 @@ return [
 
 Example of a YAML configuration file:
 
-```php
+```yaml
 timezone: America/New_York
 ```
 
