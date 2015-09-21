@@ -18,11 +18,6 @@ development, staging and production.
 A good practice would be to __not include__ your production or staging configurations in your version control.
 To do this, Config supports [Dotenv](https://github.com/vlucas/phpdotenv).
 
-```git
-*
-!.gitignore
-```
-
 ## Requirements
 
 This library uses PHP 5.6+.
@@ -127,10 +122,40 @@ $config->set('database', [
 
 See more examples in the [examples folder](https://github.com/sinergi/config/tree/master/examples).
 
-Example of a configuration file:
+### PHP Configuration File
+
+Example of a PHP configuration file:
 
 ```php
 return [
     'timezone' => "America/New_York"
 ];
 ```
+
+### Yaml Configuration File
+
+Example of a YAML configuration file:
+
+```php
+timezone: America/New_York
+```
+
+### Dotenv
+
+Example of using Dotenv in a PHP configuration file:
+
+```php
+return [
+    'timezone' => env('TIMEZONE', "America/New_York")
+];
+```
+
+And in the `.env` file:
+
+```
+TIMEZONE="America/Chicago"
+```
+
+## License
+
+Config is licensed under The MIT License (MIT).
