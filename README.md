@@ -6,9 +6,11 @@
 [![License](https://img.shields.io/packagist/l/sinergi/config.svg?style=flat)](https://packagist.org/packages/sinergi/config)
 
 PHP configurations loading library. It is made to enable your application to have different configurations depending on
-the environment it is running in. For example, your application can have different configurations for unit tests, development,
-staging and production. A good practice would be to __not include__ your production or staging configurations in your version control.
-To do this, simply add a ``.gitignore`` file to your ``configs/environment`` directory with the following lines:
+the environment it is running in. For example, your application can have different configurations for unit tests, 
+development, staging and production. 
+
+A good practice would be to __not include__ your production or staging configurations in your version control.
+To do this, Config supports [Dotenv](https://github.com/vlucas/phpdotenv).
 
 ```git
 *
@@ -17,36 +19,55 @@ To do this, simply add a ``.gitignore`` file to your ``configs/environment`` dir
 
 ## Requirements
 
-This library uses PHP 5.4+.
+This library uses PHP 5.6+.
 
 ## Installation
 
-It is recommended that you install the Config library [through composer](http://getcomposer.org/). To do so, add the following lines to your ``composer.json`` file.
+It is recommended that you install the Config library [through composer](http://getcomposer.org/). To do so, 
+run the Composer command to install the latest stable version of Config:
 
-```json
-{
-    "require": {
-       "sinergi/config": "dev-master"
-    }
-}
+```shell
+composer require sinergi/config
 ```
 
 ## Usage
 
-Setup the configurations directory:
+Use the factory to instanciate a Config collection class:
 
 ```php
-use Sinergi\Config\Config;
+use Sinergi\Config\Collection;
 
-$config = new Config(__DIR__ . "/configs");
+$config = Collection::factory([
+    'path' => __DIR__ . "/configs"
+]);
 ```
 
-Optionally, you can also setup the environment. Setting up the environment will merge normal configurations with configurations in the environment directory. For example, if you setup the environment to be *prod*, the configurations from the directory
-``configs/prod/*`` will be loaded on top of the configurations from the directory ``configs/*``. Consider the following
-example:
+Optionally, you can also setup the environment. Setting up the environment will merge normal configurations 
+with configurations in the environment directory. For example, if you setup the environment to be *prod*, 
+the configurations from the directory ``configs/prod/*`` will be loaded on top of the configurations from the 
+directory ``configs/*``. Consider the following example:
 
 ```php
-$config->setEnvironment('prod');
+use Sinergi\Config\Collection;
+
+$config = Collection::factory([
+    'path' => __DIR__ . "/configs"
+    'environment' => 'prod'
+]);
+```
+```
+
+Optionally, you can also use dotenv to hide sensible information into a `.env` file. To do so, specify a directory
+where the `.env` file. Like in this example:
+
+```php
+use Sinergi\Config\Collection;
+
+$config = Collection::factory([
+    'path' => __DIR__ . "/configs"
+    'dotenv' => __DIR__,
+    'environment' => 'prod'
+]);
 ```
 
 You can than use the configurations like this:

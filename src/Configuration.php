@@ -2,17 +2,23 @@
 
 namespace Sinergi\Config;
 
+use Dotenv\Dotenv;
 use Sinergi\Config\Path\PathCollection;
 
 class Configuration
 {
+    /**
+     * @var array
+     */
+    public static $env;
+
     /**
      * @var PathCollection
      */
     protected $paths;
 
     /**
-     * @var string
+     * @var Dotenv
      */
     protected $dotenv;
 
@@ -40,12 +46,14 @@ class Configuration
                 $this->setEnvironment($config['environment']);
             }
             if (isset($config['dotenv'])) {
-                $this->setDotenv($config['dotenv']);
+                $this->setDotenv(new Dotenv($config['dotenv']));
             }
         } else if ($config instanceof Configuration) {
             $this->setPaths($config->getPaths());
             $this->setEnvironment($config->getEnvironment());
-            $this->setDotenv($config->getDotenv());
+            if ($config->getDotenv()) {
+                $this->setDotenv($config->getDotenv());
+            }
         }
     }
 
@@ -105,7 +113,7 @@ class Configuration
     }
 
     /**
-     * @return string
+     * @return Dotenv
      */
     public function getDotenv()
     {
@@ -113,12 +121,24 @@ class Configuration
     }
 
     /**
-     * @param string $dotenv
+     * @param Dotenv $dotenv
      * @return $this
      */
-    public function setDotenv($dotenv)
+    public function setDotenv(Dotenv $dotenv)
     {
         $this->dotenv = $dotenv;
+        $this->loadDotenv();
         return $this;
+    }
+
+    private function loadDotenv()
+    {
+        $retval = [];
+        $values = $this->dotenv->load();
+        foreach ($values as $value) {
+            $parts = explode("=", $value, 2);
+            $retval[$parts[0]] = eval('return ' . $parts[1] . ';');
+        }
+        return self::$env = $retval;
     }
 }

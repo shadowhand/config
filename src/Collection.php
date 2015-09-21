@@ -2,6 +2,8 @@
 
 namespace Sinergi\Config;
 
+require_once __DIR__ . "/DotenvHelper.php";
+
 use InvalidArgumentException;
 use ArrayAccess;
 

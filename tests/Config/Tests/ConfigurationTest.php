@@ -2,6 +2,7 @@
 
 namespace Sinergi\Config\Tests;
 
+use Dotenv\Dotenv;
 use Sinergi\Config\Collection;
 use PHPUnit_Framework_TestCase;
 use Sinergi\Config\Configuration;
@@ -21,7 +22,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(PathCollection::class, $configuration->getPaths());
         $this->assertCount(1, $configuration->getPaths());
         $this->assertEquals('production', $configuration->getEnvironment());
-        $this->assertEquals(__DIR__ . "/__files", $configuration->getDotenv());
+        $this->assertInstanceOf(Dotenv::class, $configuration->getDotenv());
     }
 
     public function testInstance()
@@ -35,6 +36,6 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(PathCollection::class, $configuration->getPaths());
         $this->assertCount(1, $configuration->getPaths());
         $this->assertEquals('production', $configuration->getEnvironment());
-        $this->assertEquals(__DIR__ . "/__files", $configuration->getDotenv());
+        $this->assertInstanceOf(Dotenv::class, $configuration->getDotenv());
     }
 }
