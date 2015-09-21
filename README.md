@@ -56,7 +56,6 @@ $config = Collection::factory([
     'environment' => 'prod'
 ]);
 ```
-```
 
 Optionally, you can also use dotenv to hide sensible information into a `.env` file. To do so, specify a directory
 where the `.env` file. Like in this example:
