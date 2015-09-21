@@ -18,7 +18,6 @@ class CollectionEnvironmentTest extends PHPUnit_Framework_TestCase
             'path' => __DIR__ . "/../__files",
             'environment' => 'tests'
         ]);
-
     }
 
     public function testSetEnvironment()

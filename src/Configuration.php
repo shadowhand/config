@@ -48,7 +48,7 @@ class Configuration
             if (isset($config['dotenv'])) {
                 $this->setDotenv(new Dotenv($config['dotenv']));
             }
-        } else if ($config instanceof Configuration) {
+        } elseif ($config instanceof Configuration) {
             $this->setPaths($config->getPaths());
             $this->setEnvironment($config->getEnvironment());
             if ($config->getDotenv()) {
