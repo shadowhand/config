@@ -1,11 +1,11 @@
 <?php
+
 namespace Sinergi\Config;
 
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use JsonSerializable;
 
 class ArrayCollection implements Countable, IteratorAggregate, ArrayAccess
 {

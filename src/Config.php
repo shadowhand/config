@@ -1,4 +1,5 @@
 <?php
+
 namespace Sinergi\Config;
 
 use Exception;
