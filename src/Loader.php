@@ -1,36 +1,66 @@
 <?php
+
 namespace Sinergi\Config;
+
+use Sinergi\Config\Loader\LoaderInterface;
+use Sinergi\Config\Loader\YamlLoader;
+use Sinergi\Config\Path\PathCollection;
+use Sinergi\Config\Loader\PhpLoader;
 
 class Loader
 {
+    protected static $loaders = [
+        PhpLoader::EXTENSION => PhpLoader::class,
+        YamlLoader::EXTENSION => YamlLoader::class,
+    ];
+
     /**
      * @param PathCollection $paths
      * @param string $env
      * @param string $file
      * @return array
      */
-    public function loadFile(PathCollection $paths, $env, $file)
+    public static function load(PathCollection $paths, $env, $file)
     {
-        $array1 = $array2 = array();
-        $file = "{$file}.php";
-
-        $retval = array();
+        $retval = [];
         foreach ($paths as $path) {
-            if (file_exists($path . DIRECTORY_SEPARATOR . $file)) {
-                $array1 = require $path . DIRECTORY_SEPARATOR . $file;
-                if (!is_array($array1)) {
-                    $array1 = array();
-                }
-            }
-            if (null !== $env && file_exists($path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file)) {
-                $array2 = require $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file;
-                if (!is_array($array2)) {
-                    $array2 = array();
-                }
-            }
-            $retval = $this->mergeArrays($retval, $array1, $array2);
+            $array1 = self::loadFile($path, null, $file);
+            $array2 = self::loadFile($path, $env, $file);
+            $retval = self::mergeArrays($retval, $array1, $array2);
         }
+        return $retval;
+    }
 
+    /**
+     * @param string $path
+     * @param string $env
+     * @param string $file
+     * @return array
+     */
+    public static function loadFile($path, $env, $file)
+    {
+        $retval = [];
+        foreach (self::$loaders as $fileType => $loader) {
+            $file = "{$file}.{$fileType}";
+
+            if ($env) {
+                $path = $path . DIRECTORY_SEPARATOR . $env . DIRECTORY_SEPARATOR . $file;
+            } else {
+                $path = $path . DIRECTORY_SEPARATOR . $file;
+            }
+
+            if (file_exists($path)) {
+                if (is_string($loader)) {
+                    $loader = self::$loaders[$fileType] = new $loader;
+                }
+                if ($loader instanceof LoaderInterface) {
+                    $retval = $loader::load($path);
+                    if (!is_array($retval)) {
+                        $retval = [];
+                    }
+                }
+            }
+        }
         return $retval;
     }
 
@@ -40,100 +70,19 @@ class Loader
      * @param array $array3
      * @return array
      */
-    public function mergeArrays(array $array1, array $array2, array $array3 = null)
+    public static function mergeArrays(array $array1, array $array2, array $array3 = null)
     {
         $retval = $array1;
         foreach ($array2 as $key => $value) {
             if (is_array($value) && isset($retval[$key])) {
-                $retval[$key] = $this->mergeArrays($retval[$key], $value);
+                $retval[$key] = self::mergeArrays($retval[$key], $value);
             } else {
                 $retval[$key] = $value;
             }
         }
         if (null !== $array3) {
-            $retval = $this->mergeArrays($retval, $array3);
+            $retval = self::mergeArrays($retval, $array3);
         }
         return $retval;
-    }
-
-    /**
-     * @param string $name
-     * @return array
-     */
-    public function getKey($name)
-    {
-        $file = $key = $sub = null;
-        $parts = explode('.', $name);
-        if (isset($parts[0])) {
-            $file = $parts[0];
-        }
-        if (isset($parts[1])) {
-            $key = $parts[1];
-        }
-        if (isset($parts[2])) {
-            $sub = array();
-            foreach (array_slice($parts, 2) as $subkey) {
-                $sub[] = $subkey;
-            }
-        }
-
-        return array($file, $key, $sub);
-    }
-
-    /**
-     * @param array $haystack
-     * @param null|string $key
-     * @param null|array $sub
-     * @param null|mixed $default
-     * @return mixed
-     */
-    public function getValue(array $haystack = null, $key = null, $sub = null, $default = null)
-    {
-        if (empty($key) && !isset($haystack)) {
-            return $default;
-        } elseif (empty($key)) {
-            if (!isset($haystack) && null !== $default) {
-                return $default;
-            } elseif (isset($haystack)) {
-                return $haystack;
-            }
-            return null;
-        } elseif (!empty($key) && empty($sub)) {
-            if (empty($haystack[$key]) && null !== $default) {
-                return $default;
-            } elseif (isset($haystack[$key])) {
-                return $haystack[$key];
-            }
-            return null;
-        } elseif (is_array($sub)) {
-            $array = isset($haystack[$key]) ? $haystack[$key] : array();
-            $value = $this->findInMultiArray($sub, $array);
-            if (empty($value) && null !== $default) {
-                return $default;
-            } elseif (isset($value)) {
-                return $value;
-            }
-            return null;
-        }
-        return null;
-    }
-
-    /**
-     * @param array $needle
-     * @param array $haystack
-     * @return mixed
-     */
-    private function findInMultiArray(array $needle, array $haystack)
-    {
-        $currentNeedle = current($needle);
-        $needle = array_slice($needle, 1);
-        if (isset($haystack[$currentNeedle]) && is_array($haystack[$currentNeedle]) && count($needle)) {
-            return $this->findInMultiArray($needle, $haystack[$currentNeedle]);
-        } elseif (isset($haystack[$currentNeedle]) && !is_array($haystack[$currentNeedle]) && count($needle)) {
-            return null;
-        } elseif (isset($haystack[$currentNeedle])) {
-            return $haystack[$currentNeedle];
-        }
-        return null;
     }
 }

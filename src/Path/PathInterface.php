@@ -1,5 +1,6 @@
 <?php
-namespace Sinergi\Config;
+
+namespace Sinergi\Config\Path;
 
 interface PathInterface
 {

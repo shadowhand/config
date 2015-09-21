@@ -1,9 +1,9 @@
 <?php
 
-return array(
-    'connections' => array(
-        'default' => array(
+return [
+    'connections' => [
+        'default' => [
             'password' => "xxxxxxxxxxxxxxxxxxx"
-        )
-    )
-);
+        ]
+    ]
+];

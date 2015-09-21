@@ -1,5 +1,6 @@
 <?php
-namespace Sinergi\Config;
+
+namespace Sinergi\Config\Path;
 
 class Path implements PathInterface
 {
@@ -13,16 +14,24 @@ class Path implements PathInterface
      */
     public function __construct($path = null)
     {
-        $this->path = $path;
+        if ($path) {
+            $this->setPath($path);
+        }
     }
 
     /**
      * @param string $path
      * @return $this
+     * @throws PathNotFoundException
      */
     public function setPath($path)
     {
+        $path = realpath($path);
+        if (!is_dir($path)) {
+            throw new PathNotFoundException("Config path ({$path}) is not a valid directory");
+        }
         $this->path = $path;
+        return $this;
     }
 
     /**

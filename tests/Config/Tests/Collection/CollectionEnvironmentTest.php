@@ -1,19 +1,24 @@
 <?php
-namespace Sinergi\Config\Tests;
 
-use Sinergi\Config\Config;
+namespace Sinergi\Config\Tests\Collection;
+
+use Sinergi\Config\Collection;
 use PHPUnit_Framework_TestCase;
 
 class EnvironmentTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var Config
+     * @var Collection
      */
     private $config;
 
     public function setUp()
     {
-        $this->config = new Config(__DIR__ . "/__files", "tests");
+        $this->config = Collection::factory([
+            'path' => __DIR__ . "/../__files",
+            'environment' => 'tests'
+        ]);
+
     }
 
     public function testSetEnvironment()

@@ -1,5 +1,5 @@
 <?php
 
-return array(
+return [
     'timezone' => 'Asia/Hong_Kong'
-);
+];

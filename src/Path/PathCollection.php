@@ -1,8 +1,13 @@
 <?php
-namespace Sinergi\Config;
+
+namespace Sinergi\Config\Path;
 
 use Exception;
+use Sinergi\Config\ArrayCollection;
 
+/**
+ * @method Path get($key)
+ */
 class PathCollection extends ArrayCollection
 {
     /**
@@ -13,10 +18,6 @@ class PathCollection extends ArrayCollection
     public function add($path)
     {
         if (!$path instanceof Path) {
-            $path = realpath($path);
-            if (!is_dir($path)) {
-                throw new Exception("Config path ({$path}) is not a valid directory");
-            }
             $path = new Path($path);
         }
         $this->container[] = $path;

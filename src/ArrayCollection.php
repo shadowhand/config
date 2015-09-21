@@ -12,7 +12,7 @@ class ArrayCollection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * @var array
      */
-    protected $container = array();
+    protected $container = [];
 
     /**
      * @param array $elements
@@ -138,6 +138,6 @@ class ArrayCollection implements Countable, IteratorAggregate, ArrayAccess
 
     public function removeAll()
     {
-        $this->container = array();
+        $this->container = [];
     }
 }
