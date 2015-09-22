@@ -17,6 +17,11 @@ class Container implements ContainerInterface
      */
     private $container = [];
 
+    /**
+     * @var array
+     */
+    private $instances = [];
+
     public function __construct(ContainerInterface $container)
     {
         $this->diContainer = $container;
@@ -24,16 +29,23 @@ class Container implements ContainerInterface
 
     public function get($id)
     {
+        if (isset($this->instances[$id])) {
+            return $this->instances[$id];
+        }
+
         $className = $this->getContainerValue($id);
         if (is_callable($className)) {
             return $className($this->diContainer, $id);
         }
         $class = new $className;
-        return $class($this->diContainer);
+        return $this->instances[$id] = $class($this->diContainer);
     }
 
     public function has($id)
     {
+        if (isset($this->instances[$id])) {
+            return true;
+        }
         return $this->getContainerValue($id) !== null;
     }
 
