@@ -23,7 +23,8 @@
     "symfony/yaml": ">=2"
   },
   "require-dev": {
-    "phpunit/phpunit": "5"
+    "phpunit/phpunit": "5",
+    "doctrine/orm": "dev-master"
   },
   "autoload": {
     "psr-4": {

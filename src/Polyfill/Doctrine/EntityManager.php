@@ -6,13 +6,13 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\DefaultQuoteStrategy;
 use Doctrine\ORM\Tools\Setup;
 use Interop\Config\ConfigurationTrait;
-use Interop\Config\HasMandatoryOptions;
-use Interop\Config\HasContainerId;
+use Interop\Config\RequiresMandatoryOptions;
+use Interop\Config\RequiresConfigId;
 use Interop\Container\ContainerInterface;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\DBAL\Driver\PDOMySql\Driver as PDOMySqlDriver;
 
-class EntityManager implements HasMandatoryOptions, HasContainerId
+class EntityManager implements RequiresMandatoryOptions, RequiresConfigId
 {
     use ConfigurationTrait;
 
@@ -121,5 +121,9 @@ class EntityManager implements HasMandatoryOptions, HasContainerId
             'cacheDriverClass',
             'sqlLoggerDriverClass',
         ];
+    }
+
+    public function dimensions() {
+        return [];
     }
 }

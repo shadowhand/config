@@ -137,7 +137,7 @@ class Configuration
         $values = $this->dotenv->load();
         foreach ($values as $value) {
             $parts = explode("=", $value, 2);
-            $retval[$parts[0]] = $parts[1];
+            $retval[$parts[0]] = getenv($parts[0]);
         }
         return self::$env = $retval;
     }

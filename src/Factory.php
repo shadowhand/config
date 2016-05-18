@@ -3,10 +3,10 @@
 namespace Sinergi\Config;
 
 use Interop\Config\ConfigurationTrait;
-use Interop\Config\HasMandatoryOptions;
-use Interop\Config\HasConfig;
+use Interop\Config\RequiresMandatoryOptions;
+use Interop\Config\RequiresConfig;
 
-class Factory implements HasMandatoryOptions, HasConfig
+class Factory implements RequiresMandatoryOptions, RequiresConfig
 {
     const VENDOR_NAME = 'sinergi';
     const PACKAGE_NAME = 'config';
@@ -61,5 +61,9 @@ class Factory implements HasMandatoryOptions, HasConfig
             'environment',
             'dotenv',
         ];
+    }
+
+    public function dimensions() {
+        return [];
     }
 }
