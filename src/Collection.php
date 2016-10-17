@@ -60,7 +60,7 @@ class Collection extends Configuration implements ArrayAccess
     public function get($name, $default = null)
     {
         if (!is_string($name) || empty($name)) {
-            throw new InvalidArgumentException("Parameter \$name passed to Config::get() is not a valid string ressource");
+            throw new InvalidArgumentException("Parameter \$name passed to Config::get() is not a valid string resource");
         }
 
         list($file, $key, $sub) = Parser::getKey($name);
