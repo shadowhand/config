@@ -52,7 +52,7 @@ directory ``configs/*``. Consider the following example:
 use Sinergi\Config\Collection;
 
 $config = Collection::factory([
-    'path' => __DIR__ . "/configs"
+    'path' => __DIR__ . "/configs",
     'environment' => 'prod'
 ]);
 ```
@@ -64,7 +64,7 @@ where the `.env` file. Like in this example:
 use Sinergi\Config\Collection;
 
 $config = Collection::factory([
-    'path' => __DIR__ . "/configs"
+    'path' => __DIR__ . "/configs",
     'dotenv' => __DIR__,
     'environment' => 'prod'
 ]);
