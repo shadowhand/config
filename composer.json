@@ -16,8 +16,8 @@
     }
   ],
   "require": {
-    "php": ">=5.6",
-    "sandrokeil/interop-config": ">=0",
+    "php": "^7.1",
+    "sandrokeil/interop-config": "^2.0",
     "container-interop/container-interop": ">=1",
     "vlucas/phpdotenv": ">=2",
     "symfony/yaml": ">=2"
@@ -41,7 +41,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-develop": "0.6.3-dev"
+      "dev-develop": "0.7.x-dev"
     }
   },
   "minimum-stability": "dev",

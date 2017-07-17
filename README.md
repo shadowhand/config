@@ -20,7 +20,7 @@ To do this, Config supports [Dotenv](https://github.com/vlucas/phpdotenv).
 
 ## Requirements
 
-This library uses PHP 5.6+.
+This library uses PHP 7.1+.
 
 ## Installation
 
