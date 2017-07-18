@@ -2,8 +2,8 @@
 
 namespace Sinergi\Config;
 
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
-use Interop\Container\ContainerInterface;
 
 class Container implements ContainerInterface
 {

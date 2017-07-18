@@ -8,9 +8,9 @@ use Doctrine\ORM\Tools\Setup;
 use Interop\Config\ConfigurationTrait;
 use Interop\Config\RequiresMandatoryOptions;
 use Interop\Config\RequiresConfigId;
-use Interop\Container\ContainerInterface;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\DBAL\Driver\PDOMySql\Driver as PDOMySqlDriver;
+use Psr\Container\ContainerInterface;
 
 class EntityManager implements RequiresMandatoryOptions, RequiresConfigId
 {
